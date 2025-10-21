@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useCart } from "../context/cartContext";
+import { useTheme } from "../context/themeContext";
 
 export default function CartModal({ isOpen = true, onClose }) {
   const { state, dispatch } = useCart();
+  const { state: themeState } = useTheme();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -32,14 +34,14 @@ export default function CartModal({ isOpen = true, onClose }) {
       />
 
       <div
-        className="relative bg-white dark:bg-gray-800 w-full max-w-2xl mx-4 md:mx-0 rounded-lg shadow-lg overflow-hidden z-10"
+        className={themeState.mode === "dark" ? "relative bg-gray-800 w-full max-w-2xl mx-4 md:mx-0 rounded-lg shadow-lg overflow-hidden z-10" : "relative bg-white w-full max-w-2xl mx-4 md:mx-0 rounded-lg shadow-lg overflow-hidden z-10"}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
+        <div className="p-4 border-b border-gray-700 flex items-center justify-between">
           <h3 className="text-lg font-semibold">Shopping Cart</h3>
           <button
             onClick={() => onClose && onClose()}
-            className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="px-2 py-1 rounded hover:bg-gray-700"
             aria-label="Close cart"
           >
             ✕
@@ -69,14 +71,14 @@ export default function CartModal({ isOpen = true, onClose }) {
           )}
         </div>
 
-        <div className="p-4 border-t dark:border-gray-700 flex items-center justify-between">
+        <div className="p-4 border-t border-gray-700 flex items-center justify-between">
           <div className="text-sm">
             Total items: <span className="font-semibold">{state.totalItems ?? state.totalQuantity ?? 0}</span>
           </div>
           <div className="flex gap-2">
             <button
               onClick={handleClear}
-              className="px-3 py-2 text-sm bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300"
+              className="px-3 py-2 text-sm rounded hover:bg-gray-300"
             >
               Clear Cart
             </button>
